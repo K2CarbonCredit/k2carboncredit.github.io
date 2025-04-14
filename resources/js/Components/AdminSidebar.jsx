@@ -5,7 +5,7 @@ import { FiHome, FiBriefcase, FiUsers, FiBarChart2, FiSettings, FiHelpCircle, Fi
 export default function AdminSidebar() {
     const { url } = usePage();
     const { user } = usePage().props.auth;
-    
+
     const [activeItem, setActiveItem] = useState('admin-dashboard');
     const [openSection, setOpenSection] = useState('dashboard');
 
@@ -105,7 +105,7 @@ export default function AdminSidebar() {
             label: 'User Management',
             icon: <FiUsers className="h-5 w-5 mr-2" />,
             items: [
-                { id: 'users', label: 'All Users', href: '#' },
+                { id: 'users', label: 'All Users', href: route('admin.users.index') },
                 { id: 'roles', label: 'Roles & Permissions', href: '#' },
             ],
         },

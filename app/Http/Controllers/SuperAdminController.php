@@ -61,7 +61,7 @@ class SuperAdminController extends Controller
         $sixMonthsAgo = Carbon::now()->subMonths(6)->startOfMonth();
         
         $monthlyCompanyGrowth = DB::table('companies')
-            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('count(*) as count'))
+            ->select(DB::raw('to_char(created_at, \'YYYY-MM\') as month'), DB::raw('count(*) as count'))
             ->where('created_at', '>=', $sixMonthsAgo)
             ->groupBy('month')
             ->orderBy('month')
@@ -69,7 +69,7 @@ class SuperAdminController extends Controller
             ->keyBy('month');
             
         $monthlyUserGrowth = DB::table('users')
-            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('count(*) as count'))
+            ->select(DB::raw('to_char(created_at, \'YYYY-MM\') as month'), DB::raw('count(*) as count'))
             ->where('created_at', '>=', $sixMonthsAgo)
             ->groupBy('month')
             ->orderBy('month')
