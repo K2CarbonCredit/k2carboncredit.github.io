@@ -12,6 +12,10 @@ use App\Http\Controllers\Admin\CompanySubscriptionController;
 use App\Http\Controllers\Admin\AssetTypeController;
 use App\Http\Controllers\Admin\AssetSubTypeController;
 use App\Http\Controllers\Admin\TelemetryProviderController;
+use App\Http\Controllers\VehicleMakeController;
+use App\Http\Controllers\VehicleModelController;
+use App\Http\Controllers\Company\FleetVehicleController;
+use App\Http\Controllers\Company\FleetEquipmentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,7 +34,7 @@ require __DIR__.'/auth.php';
 
 // Redirect authenticated users based on their role
 Route::get('/dashboard', function () {
-    $user = auth()->user();
+    $user = request()->user();
     
     if ($user->hasRole('super_admin')) {
         return redirect()->route('admin.dashboard');
@@ -78,6 +82,28 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     
     // Subscription Payment Management
     Route::get('/companies/{company}/subscriptions/{subscription}/payments/create', [CompanySubscriptionController::class, 'createPayment'])->name('companies.subscriptions.payments.create');
+
+    // Vehicle Makes Management
+    Route::resource('fleet/makes', VehicleMakeController::class)->names([
+        'index' => 'fleet.makes.index',
+        'create' => 'fleet.makes.create',
+        'store' => 'fleet.makes.store',
+        'show' => 'fleet.makes.show',
+        'edit' => 'fleet.makes.edit',
+        'update' => 'fleet.makes.update',
+        'destroy' => 'fleet.makes.destroy',
+    ]);
+
+    // Vehicle Models Management
+    Route::resource('fleet/models', VehicleModelController::class)->names([
+        'index' => 'fleet.models.index',
+        'create' => 'fleet.models.create',
+        'store' => 'fleet.models.store',
+        'show' => 'fleet.models.show',
+        'edit' => 'fleet.models.edit',
+        'update' => 'fleet.models.update',
+        'destroy' => 'fleet.models.destroy',
+    ]);
     Route::post('/companies/{company}/subscriptions/{subscription}/payments', [CompanySubscriptionController::class, 'storePayment'])->name('companies.subscriptions.payments.store');
     
     // Subscription Actions
@@ -102,6 +128,26 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     
     // User Management
     Route::resource('users', UserController::class);
+
+    // Vehicle Makes & Models Management
+    Route::resource('fleet/makes', VehicleMakeController::class)->names([
+        'index' => 'fleet.makes.index',
+        'create' => 'fleet.makes.create',
+        'store' => 'fleet.makes.store',
+        'show' => 'fleet.makes.show',
+        'edit' => 'fleet.makes.edit',
+        'update' => 'fleet.makes.update',
+        'destroy' => 'fleet.makes.destroy',
+    ]);
+    Route::resource('fleet/models', VehicleModelController::class)->names([
+        'index' => 'fleet.models.index',
+        'create' => 'fleet.models.create',
+        'store' => 'fleet.models.store',
+        'show' => 'fleet.models.show',
+        'edit' => 'fleet.models.edit',
+        'update' => 'fleet.models.update',
+        'destroy' => 'fleet.models.destroy',
+    ]);
 });
 
 // Platform Admin routes
@@ -151,5 +197,40 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/company/marketplace', function() {
             return Inertia::render('Company/Marketplace');
         })->name('company.marketplace');
+    });
+
+    // Fleet Management routes
+    Route::prefix('company')->name('company.')->group(function () {
+        // Fleet Management
+        Route::resource('fleets', \App\Http\Controllers\Company\FleetController::class);
+        Route::post('/fleets/{fleet}/assign-vehicles', [\App\Http\Controllers\Company\FleetController::class, 'assignVehicles'])->name('fleets.assign-vehicles');
+        Route::post('/fleets/{fleet}/remove-vehicles', [\App\Http\Controllers\Company\FleetController::class, 'removeVehicles'])->name('fleets.remove-vehicles');
+        
+        // Vehicle Management
+        Route::prefix('fleet')->name('fleet.')->group(function () {
+            // Vehicle Management
+            Route::get('/vehicles', [FleetVehicleController::class, 'index'])->name('vehicles.index');
+            Route::get('/vehicles/create', [FleetVehicleController::class, 'create'])->name('vehicles.create');
+            Route::post('/vehicles', [FleetVehicleController::class, 'store'])->name('vehicles.store');
+            Route::get('/vehicles/{vehicle}/edit', [FleetVehicleController::class, 'edit'])->name('vehicles.edit');
+            Route::put('/vehicles/{vehicle}', [FleetVehicleController::class, 'update'])->name('vehicles.update');
+            Route::delete('/vehicles/{vehicle}', [FleetVehicleController::class, 'destroy'])->name('vehicles.destroy');
+            Route::post('/vehicles/{vehicle}/onboarding-status', [FleetVehicleController::class, 'updateOnboardingStatus'])->name('vehicles.onboarding-status');
+            
+            // AJAX routes for dependent dropdowns
+            Route::get('/subtypes', [FleetVehicleController::class, 'getSubtypes'])->name('subtypes');
+            Route::get('/models', [FleetVehicleController::class, 'getModels'])->name('models');
+        });
+    });
+    
+    // For backward compatibility - redirect old routes to new ones
+    Route::redirect('/company/fleet/create', '/company/fleet/vehicles/create');
+    Route::redirect('/company/fleet/{vehicle}/edit', '/company/fleet/vehicles/{vehicle}/edit');
+    
+    // API routes for dependent dropdowns
+    Route::prefix('api')->name('api.')->group(function () {
+        Route::get('/subtypes/by-type/{type}', [\App\Http\Controllers\Company\FleetVehicleController::class, 'getSubtypesByType'])->name('subtypes.by.type');
+        Route::get('/models/by-make/{make}', [\App\Http\Controllers\Company\FleetVehicleController::class, 'getModelsByMake'])->name('models.by.make');
+        Route::get('/manufacturers', [\App\Http\Controllers\Company\FleetEquipmentController::class, 'getManufacturers'])->name('manufacturers');
     });
 });

@@ -6,10 +6,10 @@ export default function Sidebar() {
     const { url } = usePage();
     const { user } = usePage().props.auth;
     const { company, isImpersonating } = usePage().props;
-    
+
     // Get roles and permissions directly from auth props
     const { roles = [], permissions = [] } = usePage().props.auth;
-    
+
     const [activeItem, setActiveItem] = useState('company-dashboard');
     const [openSection, setOpenSection] = useState('dashboards');
 
@@ -18,8 +18,11 @@ export default function Sidebar() {
         const currentPath = window.location.pathname;
         const searchParams = new URLSearchParams(window.location.search);
         const currentTab = searchParams.get('tab');
-        
-        if (currentPath.includes('profile')) {
+
+        if (currentPath.includes('company/fleet')) {
+            setActiveItem('fleet');
+            setOpenSection('fleet-management');
+        } else if (currentPath.includes('profile')) {
             setActiveItem('profile');
             setOpenSection('settings');
         } else if (currentPath.includes('admin/dashboard')) {
@@ -52,7 +55,7 @@ export default function Sidebar() {
         } else if (currentPath.includes('company/settings')) {
             setActiveItem('company-settings');
             setOpenSection('settings');
-            
+
             // Handle settings sub-tabs
             if (currentTab === 'users') {
                 window.currentSettingsTab = 'users-settings';
@@ -74,7 +77,7 @@ export default function Sidebar() {
     const toggleSection = (section) => {
         setOpenSection(openSection === section ? null : section);
     };
-    
+
     const stopImpersonating = async () => {
         try {
             await axios.post(route('admin.stop-impersonating'));
@@ -123,6 +126,15 @@ export default function Sidebar() {
     // Company sections
     const companySections = [
         {
+            id: 'fleet-management',
+            label: 'Fleet Management',
+            icon: 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z',
+            items: [
+                { id: 'fleet', label: 'Vehicles', href: route('company.fleet.vehicles.index') },
+                { id: 'fleets', label: 'Fleets', href: route('company.fleets.index') },
+            ],
+        },
+        {
             id: 'dashboards',
             label: 'Dashboards',
             icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
@@ -147,9 +159,9 @@ export default function Sidebar() {
             icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z',
             items: [
                 { id: 'profile', label: 'Profile', href: route('profile.edit') },
-                hasRole('company_owner') || hasRole('super_admin') ? { 
-                    id: 'company-settings', 
-                    label: 'Company Settings', 
+                hasRole('company_owner') || hasRole('super_admin') ? {
+                    id: 'company-settings',
+                    label: 'Company Settings',
                     href: route('company.settings'),
                     subItems: [
                         { id: 'general-settings', label: 'General', href: route('company.settings') },
@@ -159,9 +171,9 @@ export default function Sidebar() {
                         { id: 'security-settings', label: 'Security', href: route('company.settings') + '?tab=security' },
                     ]
                 } : null,
-                hasRole('company_owner') || hasRole('super_admin') ? { 
-                    id: 'telemetry-integrations', 
-                    label: 'Telemetry Integrations', 
+                hasRole('company_owner') || hasRole('super_admin') ? {
+                    id: 'telemetry-integrations',
+                    label: 'Telemetry Integrations',
                     href: route('company.telemetry.index')
                 } : null,
                 { id: 'help', label: 'Help & Support', href: '#' },
@@ -171,7 +183,7 @@ export default function Sidebar() {
 
     // Determine which sections to show based on user role
     let sections = [];
-    
+
     if (hasRole('super_admin') && !isImpersonating) {
         sections = adminSections;
     } else if (hasRole('platform_admin') && !isImpersonating) {
@@ -207,13 +219,13 @@ export default function Sidebar() {
                         <div className="text-xs opacity-70">{user.title || 'Carbon Manager'}</div>
                     </div>
                 </div>
-                
+
                 {/* Show company name if impersonating */}
                 {isImpersonating && company && (
                     <div className="mt-2 p-2 bg-warning/10 rounded-lg text-sm">
                         <div className="flex justify-between items-center">
                             <span>Viewing: <strong>{company.name}</strong></span>
-                            <button 
+                            <button
                                 onClick={stopImpersonating}
                                 className="btn btn-xs btn-ghost"
                             >

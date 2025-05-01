@@ -50,7 +50,7 @@ class User extends Authenticatable
             'company_id' => 'integer',
         ];
     }
-    
+
     /**
      * Get the company that the user belongs to.
      */
@@ -59,5 +59,5 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
- 
+
 }

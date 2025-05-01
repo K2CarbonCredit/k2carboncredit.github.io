@@ -31,6 +31,12 @@ export default function AdminSidebar() {
         } else if (url.includes('admin/assets/types')) {
             setActiveItem('asset-types');
             setOpenSection('assets');
+        } else if (url.includes('admin/fleet/makes')) {
+            setActiveItem('vehicle-makes');
+            setOpenSection('fleet');
+        } else if (url.includes('admin/fleet/models')) {
+            setActiveItem('vehicle-models');
+            setOpenSection('fleet');
         } else if (url.includes('admin/telemetry-providers')) {
             setActiveItem('telemetry-providers');
             setOpenSection('integrations');
@@ -87,9 +93,18 @@ export default function AdminSidebar() {
         {
             id: 'assets',
             label: 'Asset Management',
-            icon: <FiTruck className="h-5 w-5 mr-2" />,
+            icon: <FiTag className="h-5 w-5 mr-2" />,
             items: [
                 { id: 'asset-types', label: 'Asset Types', href: route('admin.types.index') },
+            ],
+        },
+        {
+            id: 'fleet',
+            label: 'Fleet Management',
+            icon: <FiTruck className="h-5 w-5 mr-2" />,
+            items: [
+                { id: 'vehicle-makes', label: 'Vehicle Makes', href: route('admin.fleet.makes.index') },
+                { id: 'vehicle-models', label: 'Vehicle Models', href: route('admin.fleet.models.index') },
             ],
         },
         {
