@@ -10,7 +10,7 @@ import Modal from '@/Components/Modal';
 export default function Index({ auth, companies, filters, statuses, subscriptionStatuses }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [companyToDelete, setCompanyToDelete] = useState(null);
-    
+
     const { data, setData, get, processing } = useForm({
         search: filters.search || '',
         status: filters.status || 'all',
@@ -19,7 +19,7 @@ export default function Index({ auth, companies, filters, statuses, subscription
         sort_direction: filters.sort_direction || 'desc',
         view: filters.view || 'default',
     });
-    
+
     const handleSearch = (e) => {
         e.preventDefault();
         get(route('admin.companies.index'), {
@@ -28,99 +28,95 @@ export default function Index({ auth, companies, filters, statuses, subscription
             only: ['companies', 'filters']
         });
     };
-    
+
     const handleSort = (field) => {
-        const direction = 
-            data.sort_field === field && data.sort_direction === 'asc' 
-                ? 'desc' 
+        const direction =
+            data.sort_field === field && data.sort_direction === 'asc'
+                ? 'desc'
                 : 'asc';
-        
+
         setData({
             ...data,
             sort_field: field,
             sort_direction: direction,
         });
-        
+
         get(route('admin.companies.index'), {
             preserveState: true,
             preserveScroll: true,
         });
     };
-    
+
     const confirmDelete = (company) => {
         setCompanyToDelete(company);
         setShowDeleteModal(true);
     };
-    
+
     const deleteCompany = () => {
         if (companyToDelete) {
             window.location.href = route('admin.companies.destroy', companyToDelete.id);
         }
     };
-    
+
     const getSortIcon = (field) => {
         if (data.sort_field !== field) {
             return null;
         }
-        
-        return data.sort_direction === 'asc' 
-            ? <span className="ml-1">↑</span> 
+
+        return data.sort_direction === 'asc'
+            ? <span className="ml-1">↑</span>
             : <span className="ml-1">↓</span>;
     };
-    
+
     const statusBadge = (status) => {
         const colors = {
             active: 'badge-success',
             inactive: 'badge-error',
             pending: 'badge-warning',
         };
-        
+
         return (
             <div className={`badge ${colors[status] || 'badge-ghost'}`}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
         );
     };
-    
+
     return (
         <AdminLayout
             user={auth.user}
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-base-content leading-tight">
-                        {data.view === 'subscriptions' ? 'Company Subscriptions' : 'Companies'}
-                    </h2>
-                    <div className="flex gap-2">
-                        {data.view !== 'subscriptions' ? (
-                            <Link href={route('admin.companies.index') + '?view=subscriptions'}>
-                                <button type="button" className="btn btn-outline btn-sm">
-                                    <FiCreditCard className="mr-1" /> View Subscriptions
-                                </button>
-                            </Link>
-                        ) : (
-                            <Link href={route('admin.companies.index')}>
-                                <button type="button" className="btn btn-outline btn-sm">
-                                    <FiBriefcase className="mr-1" /> View Companies
-                                </button>
-                            </Link>
-                        )}
-                        <Link href={route('admin.companies.create')}>
-                            <button type="button" className="btn btn-primary btn-sm">
-                                <FiPlus className="mr-1" /> Add Company
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            }
         >
             <Head title="Companies" />
 
-            <div className="py-6">
+            <div>
                 <div className="card bg-base-100 shadow-xl">
                     <div className="card-body">
-                        <h3 className="card-title text-base-content mb-4">Companies List</h3>
+                        <div className="card-header flex items-center justify-between">
+                            <h3 className="card-title text-base-content text-xl font-semibold inline-block">Companies List</h3>
+                            <div className="flex gap-2">
+                                {data.view !== 'subscriptions' ? (
+                                    <Link href={route('admin.companies.index') + '?view=subscriptions'}>
+                                        <button type="button" className="btn btn-outline btn-sm">
+                                            <FiCreditCard className="mr-1" /> View Subscriptions
+                                        </button>
+                                    </Link>
+                                ) : (
+                                    <Link href={route('admin.companies.index')}>
+                                        <button type="button" className="btn btn-outline btn-sm">
+                                            <FiBriefcase className="mr-1" /> View Companies
+                                        </button>
+                                    </Link>
+                                )}
+                                <Link href={route('admin.companies.create')}>
+                                    <button type="button" className="btn btn-primary btn-sm">
+                                        <FiPlus className="mr-1" /> Add Company
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+
                         <div className="divider mt-0"></div>
-                        
+
                         {/* Filters */}
                         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-6">
                             <div className="form-control flex-grow">
@@ -183,19 +179,19 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                 </button>
                             </div>
                         </form>
-                            
+
                         {/* Companies Table */}
                         <div className="overflow-x-auto w-full">
                             <table className="table table-zebra w-full">
                                 <thead>
                                     <tr>
-                                        <th 
+                                        <th
                                             className="cursor-pointer"
                                             onClick={() => handleSort('name')}
                                         >
                                             Name {getSortIcon('name')}
                                         </th>
-                                        <th 
+                                        <th
                                             className="cursor-pointer"
                                             onClick={() => handleSort('email')}
                                         >
@@ -203,19 +199,19 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                         </th>
                                         {data.view !== 'subscriptions' ? (
                                             <>
-                                                <th 
+                                                <th
                                                     className="cursor-pointer"
                                                     onClick={() => handleSort('industry')}
                                                 >
                                                     Industry {getSortIcon('industry')}
                                                 </th>
-                                                <th 
+                                                <th
                                                     className="cursor-pointer"
                                                     onClick={() => handleSort('status')}
                                                 >
                                                     Status {getSortIcon('status')}
                                                 </th>
-                                                <th 
+                                                <th
                                                     className="cursor-pointer"
                                                     onClick={() => handleSort('users_count')}
                                                 >
@@ -239,7 +235,7 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                             <tr key={company.id}>
                                                 <td className="font-medium">{company.name}</td>
                                                 <td>{company.email}</td>
-                                                
+
                                                 {data.view !== 'subscriptions' ? (
                                                     <>
                                                         <td>{company.industry || '-'}</td>
@@ -282,7 +278,7 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                                         </td>
                                                     </>
                                                 )}
-                                                
+
                                                 <td>
                                                     <div className="flex flex-wrap gap-2">
                                                         <Link href={route('admin.companies.show', company.id)} className="btn btn-ghost btn-xs">
@@ -296,7 +292,7 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                                                 <Link href={route('admin.companies.users.index', company.id)} className="btn btn-ghost btn-xs">
                                                                     <FiUsers className="text-info" />
                                                                 </Link>
-                                                                <Link href={route('admin.companies.impersonate', company.id)} method="post" className="btn btn-ghost btn-xs">                                                            
+                                                                <Link href={route('admin.companies.impersonate', company.id)} method="post" className="btn btn-ghost btn-xs">
                                                                     <FiUserPlus className="text-accent" />
                                                                 </Link>
                                                             </>
@@ -305,9 +301,9 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                                                 <FiCreditCard className="text-info" />
                                                             </Link>
                                                         )}
-                                                        <button 
+                                                        <button
                                                             type="button"
-                                                            className="btn btn-ghost btn-xs" 
+                                                            className="btn btn-ghost btn-xs"
                                                             onClick={() => confirmDelete(company)}
                                                         >
                                                             <FiTrash2 className="text-error" />
@@ -328,7 +324,7 @@ export default function Index({ auth, companies, filters, statuses, subscription
                                 </tbody>
                             </table>
                         </div>
-                            
+
                             {/* Pagination */}
                             <Pagination class="mt-6" links={companies.links} />
                     </div>
@@ -336,23 +332,23 @@ export default function Index({ auth, companies, filters, statuses, subscription
                 {/* </div> */}
                 <div className="h-16"></div>
             </div>
-            
+
             {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <div className="p-6">
                     <h2 className="text-lg font-medium text-base-content">
                         Are you sure you want to delete this company?
                     </h2>
-                    
+
                     <p className="mt-1 text-sm text-base-content">
                         This action cannot be undone. All users associated with this company will also be deleted.
                     </p>
-                    
+
                     <div className="mt-6 flex justify-end space-x-3">
                         <button className="btn btn-outline" onClick={() => setShowDeleteModal(false)}>
                             Cancel
                         </button>
-                        
+
                         <button className="btn btn-error" onClick={deleteCompany}>
                             Delete Company
                         </button>

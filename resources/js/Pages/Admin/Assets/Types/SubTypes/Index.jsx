@@ -57,44 +57,43 @@ export default function AssetSubTypeIndex({ auth, assetType, subTypes, filters }
     return (
         <AdminLayout
             user={auth.user}
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-base-content leading-tight">
-                        Asset Sub-types for {assetType.name}
-                    </h2>
-                    <Link href={route('admin.types.sub-types.create', assetType.id)}>
-                        <button type="button" className="btn btn-primary btn-sm">
-                            <FiPlus className="mr-1" /> Add Sub-type
-                        </button>
-                    </Link>
-                </div>
-            }
         >
             <Head title={`Asset Sub-types - ${assetType.name}`} />
 
-            <div className="py-6">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="mb-4">
-                        <Link href={route('admin.types.show', assetType.id)} className="btn btn-outline btn-sm">
-                            <FiArrowLeft className="mr-1" /> Back to Asset Type
-                        </Link>
-                    </div>
+            <div>
+                <div className="card bg-base-100 shadow-xl mb-6">
+                    <div className="card-body">
+                        <div className="card-header flex items-center justify-between mb-4">
+                            <h3 className="card-title text-base-content text-xl font-semibold inline-block">Asset Sub-types for {assetType.name}</h3>
+                            <div className="flex gap-2">
+                                <Link href={route('admin.types.show', assetType.id)}>
+                                    <button type="button" className="btn btn-outline btn-sm">
+                                        <FiArrowLeft className="mr-1" /> Back to Asset Type
+                                    </button>
+                                </Link>
+                                <Link href={route('admin.types.sub-types.create', assetType.id)}>
+                                    <button type="button" className="btn btn-primary btn-sm">
+                                        <FiPlus className="mr-1" /> Add Sub-type
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
                     
-                    {/* Search and Filter Bar */}
-                    <div className="bg-base-100 shadow-md rounded-lg p-4 mb-6">
-                        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
+                        {/* Search and Filter Bar */}
+                        <div className="bg-base-100 shadow-sm rounded-lg p-4 mb-6">
+                            <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
                             <div className="form-control w-full md:w-1/2">
                                 <div className="input-group">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Search sub-types..." 
-                                        className="input input-bordered w-full" 
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                    />
-                                    <button type="submit" className="btn btn-square">
-                                        <FiSearch />
-                                    </button>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Search sub-types..." 
+                                            className="input input-bordered w-full" 
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                        <button type="submit" className="btn btn-square">
+                                            <FiSearch />
+                                        </button>
                                 </div>
                             </div>
                             <div className="form-control w-full md:w-1/2">
@@ -103,11 +102,11 @@ export default function AssetSubTypeIndex({ auth, assetType, subTypes, filters }
                                         <FiFilter className="mr-2" /> Status
                                     </span>
                                     <select 
-                                        className="select select-bordered flex-grow"
+                                        className="select select-bordered w-full" 
                                         value={statusFilter}
                                         onChange={handleStatusChange}
                                     >
-                                        <option value="all">All Statuses</option>
+                                        <option value="all">All Status</option>
                                         <option value="active">Active</option>
                                         <option value="inactive">Inactive</option>
                                     </select>
@@ -116,47 +115,51 @@ export default function AssetSubTypeIndex({ auth, assetType, subTypes, filters }
                         </form>
                     </div>
                     
-                    <div className="card bg-base-100 shadow-xl">
-                        <div className="card-body">
-                            <h3 className="card-title text-base-content mb-4">Asset Sub-types</h3>
-                            <div className="divider mt-0"></div>
+                        <div className="card bg-base-100 shadow-sm overflow-hidden">
+                            <div className="card-body p-0">
+                                <h3 className="card-title text-base-content mb-4">Asset Sub-types</h3>
+                                <div className="divider mt-0"></div>
                             
-                            <div className="overflow-x-auto w-full">
-                                <table className="table table-zebra w-full">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {subTypes.data.length > 0 ? (
-                                            subTypes.data.map((subType) => (
-                                                <tr key={subType.id}>
-                                                    <td className="font-medium">{subType.name}</td>
-                                                    <td>{subType.description || '-'}</td>
-                                                    <td>{statusBadge(subType.status)}</td>
-                                                    <td>
-                                                        <div className="flex flex-wrap gap-2">
-                                                            <Link href={route('admin.types.sub-types.show', [assetType.id, subType.id])} className="btn btn-ghost btn-xs">
-                                                                <FiEye className="text-primary" />
-                                                            </Link>
-                                                            <Link href={route('admin.types.sub-types.edit', [assetType.id, subType.id])} className="btn btn-ghost btn-xs">
-                                                                <FiEdit className="text-warning" />
-                                                            </Link>
-                                                            <button 
-                                                                type="button"
-                                                                className="btn btn-ghost btn-xs" 
-                                                                onClick={() => confirmDelete(subType)}
-                                                            >
-                                                                <FiTrash2 className="text-error" />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
+                                <div className="overflow-x-auto">
+                                    <table className="table w-full">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {subTypes.data.length > 0 ? (
+                                                subTypes.data.map((subType) => (
+                                                    <tr key={subType.id}>
+                                                        <td className="font-medium">{subType.name}</td>
+                                                        <td>{subType.description || '-'}</td>
+                                                        <td>{statusBadge(subType.status)}</td>
+                                                        <td>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                <Link href={route('admin.types.sub-types.show', [assetType.id, subType.id])}>
+                                                                    <button type="button" className="btn btn-ghost btn-xs">
+                                                                        <FiEye className="text-primary" />
+                                                                    </button>
+                                                                </Link>
+                                                                <Link href={route('admin.types.sub-types.edit', [assetType.id, subType.id])}>
+                                                                    <button type="button" className="btn btn-ghost btn-xs">
+                                                                        <FiEdit className="text-warning" />
+                                                                    </button>
+                                                                </Link>
+                                                                <button 
+                                                                    type="button"
+                                                                    className="btn btn-ghost btn-xs" 
+                                                                    onClick={() => confirmDelete(subType)}
+                                                                >
+                                                                    <FiTrash2 className="text-error" />
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))
                                         ) : (
                                             <tr>
                                                 <td colSpan="4" className="text-center py-4">
@@ -171,7 +174,8 @@ export default function AssetSubTypeIndex({ auth, assetType, subTypes, filters }
                             </div>
                             
                             {/* Pagination */}
-                            <Pagination class="mt-6" links={subTypes.links} />
+                                <Pagination class="mt-6" links={subTypes.links} />
+                            </div>
                         </div>
                     </div>
                 </div>

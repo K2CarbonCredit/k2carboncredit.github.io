@@ -10,7 +10,7 @@ import { FiUser, FiMail, FiPhone, FiGlobe, FiMapPin, FiInfo, FiFileText, FiImage
 
 export default function Edit({ auth, company }) {
     const [logoPreview, setLogoPreview] = useState(company.logo ? `/storage/${company.logo}` : null);
-    
+
     const { data, setData, post, processing, errors, reset } = useForm({
         _method: 'PUT',
         name: company.name || '',
@@ -27,16 +27,16 @@ export default function Edit({ auth, company }) {
         status: company.status || 'active',
         logo: null,
     });
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route('admin.companies.update', company.id));
     };
-    
+
     const handleLogoChange = (e) => {
         const file = e.target.files[0];
         setData('logo', file);
-        
+
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -45,7 +45,7 @@ export default function Edit({ auth, company }) {
             reader.readAsDataURL(file);
         }
     };
-    
+
     return (
         <AdminLayout
             user={auth.user}
@@ -74,12 +74,12 @@ export default function Edit({ auth, company }) {
                     <div className="card-body">
                         <h3 className="card-title text-base-content mb-4">{company.name}</h3>
                         <div className="divider mt-0"></div>
-                        
+
                         <form onSubmit={handleSubmit}>
                             <div className="mb-8">
                                 <h3 className="card-title text-base-content mb-4 text-base">Company Information</h3>
                                 <div className="divider mt-0"></div>
-                                
+
                                 {/* Company Logo */}
                                 <div className="mb-6">
                                     <div className="form-control">
@@ -87,9 +87,9 @@ export default function Edit({ auth, company }) {
                                         <div className="mt-2 flex items-center gap-4">
                                                 {logoPreview ? (
                                                     <div className="relative">
-                                                        <img 
-                                                            src={logoPreview} 
-                                                            alt="Logo Preview" 
+                                                        <img
+                                                            src={logoPreview}
+                                                            alt="Logo Preview"
                                                             className="w-24 h-24 object-cover rounded-md border border-base-300"
                                                         />
                                                         <button
@@ -130,7 +130,7 @@ export default function Edit({ auth, company }) {
                                         <InputError message={errors.logo} className="mt-2" />
                                     </div>
                                 </div>
-                                    
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Company Name */}
                                     <div className="form-control">
@@ -150,7 +150,7 @@ export default function Edit({ auth, company }) {
                                         </div>
                                         <InputError message={errors.name} className="mt-2" />
                                     </div>
-                                    
+
                                     {/* Company Email */}
                                     <div className="form-control">
                                         <InputLabel htmlFor="email" value="Company Email" />
@@ -169,7 +169,7 @@ export default function Edit({ auth, company }) {
                                         </div>
                                         <InputError message={errors.email} className="mt-2" />
                                     </div>
-                                        
+
                                     {/* Phone */}
                                     <div className="form-control">
                                         <InputLabel htmlFor="phone" value="Phone" />
@@ -187,7 +187,7 @@ export default function Edit({ auth, company }) {
                                         </div>
                                         <InputError message={errors.phone} className="mt-2" />
                                     </div>
-                                    
+
                                     {/* Website */}
                                     <div className="form-control">
                                         <InputLabel htmlFor="website" value="Website" />
@@ -205,7 +205,7 @@ export default function Edit({ auth, company }) {
                                             />
                                             <InputError message={errors.website} className="mt-2" />
                                         </div>
-                                        
+
                                         {/* Industry */}
                                         <div>
                                             <InputLabel htmlFor="industry" value="Industry" />
@@ -218,7 +218,7 @@ export default function Edit({ auth, company }) {
                                             />
                                             <InputError message={errors.industry} className="mt-2" />
                                         </div>
-                                        
+
                                         {/* Status */}
                                         <div>
                                             <InputLabel htmlFor="status" value="Status" />
@@ -236,7 +236,7 @@ export default function Edit({ auth, company }) {
                                             <InputError message={errors.status} className="mt-2" />
                                         </div>
                                     </div>
-                                    
+
                                     {/* Address */}
                                     <div className="mt-6">
                                         <InputLabel htmlFor="address" value="Address" />
@@ -249,7 +249,7 @@ export default function Edit({ auth, company }) {
                                         />
                                         <InputError message={errors.address} className="mt-2" />
                                     </div>
-                                    
+
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
                                         {/* City */}
                                         <div>
@@ -263,7 +263,7 @@ export default function Edit({ auth, company }) {
                                             />
                                             <InputError message={errors.city} className="mt-2" />
                                         </div>
-                                        
+
                                         {/* State/Province */}
                                         <div>
                                             <InputLabel htmlFor="state" value="State/Province" />
@@ -276,7 +276,7 @@ export default function Edit({ auth, company }) {
                                             />
                                             <InputError message={errors.state} className="mt-2" />
                                         </div>
-                                        
+
                                         {/* Country */}
                                         <div>
                                             <InputLabel htmlFor="country" value="Country" />
@@ -289,7 +289,7 @@ export default function Edit({ auth, company }) {
                                             />
                                             <InputError message={errors.country} className="mt-2" />
                                         </div>
-                                        
+
                                         {/* Postal Code */}
                                         <div>
                                             <InputLabel htmlFor="postal_code" value="Postal Code" />
@@ -303,7 +303,7 @@ export default function Edit({ auth, company }) {
                                             <InputError message={errors.postal_code} className="mt-2" />
                                         </div>
                                     </div>
-                                    
+
                                     {/* Description */}
                                     <div className="mt-6">
                                         <InputLabel htmlFor="description" value="Description" />
@@ -317,7 +317,7 @@ export default function Edit({ auth, company }) {
                                         <InputError message={errors.description} className="mt-2" />
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex items-center justify-end mt-8">
                                     <Link href={route('admin.companies.show', company.id)}>
                                         <button type="button" className="btn btn-outline mr-2">Cancel</button>

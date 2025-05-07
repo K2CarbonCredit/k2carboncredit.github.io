@@ -69,27 +69,25 @@ export default function Index({ auth, plans, filters = {}, statuses = { all: 'Al
   return (
     <AdminLayout
       user={auth.user}
-      header={
-        <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-xl text-base-content leading-tight">Subscription Plans</h2>
-          <Link href="/admin/subscriptions/plans/create">
-            <button type="button" className="btn btn-primary btn-sm">
-              <FiPlus className="mr-1" /> Add Plan
-            </button>
-          </Link>
-        </div>
-      }
     >
       <Head title="Subscription Plans" />
 
-      <div className="py-6">
+      <div>
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <h3 className="card-title text-base-content mb-4">Manage Subscription Plans</h3>
-            <div className="divider mt-0"></div>
+            <div className="card-header flex items-center justify-between">
+              <h3 className="card-title text-base-content text-xl font-semibold inline-block">Subscription Plans</h3>
+              <div className="flex gap-2">
+                <Link href="/admin/subscriptions/plans/create">
+                  <button type="button" className="btn btn-primary btn-sm">
+                    <FiPlus className="mr-1" /> Add Plan
+                  </button>
+                </Link>
+              </div>
+            </div>
             
             {/* Filters */}
-            <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 mb-6">
+            <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 my-6">
               <div className="form-control flex-grow">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -238,17 +236,15 @@ export default function Index({ auth, plans, filters = {}, statuses = { all: 'Al
                         </td>
                         <td>
                           <div className="flex items-center space-x-2">
-                            <Link href={`/admin/subscriptions/plans/${plan.id}/edit`}>
-                              <button className="btn btn-sm btn-outline btn-info">
-                                <FiEdit className="mr-1" /> Edit
-                              </button>
+                            <Link href={`/admin/subscriptions/plans/${plan.id}/edit`} className="btn btn-ghost btn-xs">
+                              <FiEdit className="text-info" />
                             </Link>
                             <button 
                               type="button"
-                              className="btn btn-sm btn-outline btn-error" 
+                              className="btn btn-ghost btn-xs" 
                               onClick={() => confirmDelete(plan)}
                             >
-                              <FiTrash2 className="mr-1" /> Delete
+                              <FiTrash2 className="text-error" />
                             </button>
                           </div>
                         </td>
@@ -258,9 +254,7 @@ export default function Index({ auth, plans, filters = {}, statuses = { all: 'Al
                     <tr>
                       <td colSpan="8" className="text-center py-4">
                         <div className="alert alert-info">
-                          <div>
-                            <span>No subscription plans found. Create your first plan to get started.</span>
-                          </div>
+                          No subscription plans found. Create your first plan to get started.
                         </div>
                       </td>
                     </tr>
@@ -269,6 +263,7 @@ export default function Index({ auth, plans, filters = {}, statuses = { all: 'Al
               </table>
             </div>
             
+            {/* Pagination */}
             {plans.links && <Pagination class="mt-6" links={plans.links} />}
           </div>
         </div>
@@ -282,7 +277,7 @@ export default function Index({ auth, plans, filters = {}, statuses = { all: 'Al
             Are you sure you want to delete this subscription plan?
           </h2>
           
-          <p className="mt-1 text-sm text-base-content/70">
+          <p className="mt-1 text-sm text-base-content">
             This action cannot be undone. Companies using this plan may be affected.
           </p>
           

@@ -25,8 +25,8 @@ export default function Edit({ auth, company, subscription, plans }) {
                         Edit Subscription for {company.name}
                     </h2>
                     <div className="flex gap-2">
-                        <Link 
-                            href={route('admin.companies.subscriptions.show', [company.id, subscription.id])} 
+                        <Link
+                            href={route('admin.companies.subscriptions.show', [company.id, subscription.id])}
                             className="btn btn-sm btn-outline"
                         >
                             <FiArrowLeft className="mr-1" /> Back to Subscription
@@ -42,7 +42,7 @@ export default function Edit({ auth, company, subscription, plans }) {
                     <div className="card bg-base-100 shadow-xl">
                         <div className="card-body">
                             <h3 className="card-title text-lg mb-4">Edit Subscription</h3>
-                            
+
                             <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Subscription Plan */}
@@ -50,7 +50,7 @@ export default function Edit({ auth, company, subscription, plans }) {
                                         <label className="label">
                                             <span className="label-text">Subscription Plan</span>
                                         </label>
-                                        <select 
+                                        <select
                                             className={`select select-bordered w-full ${errors.subscription_plan_id ? 'select-error' : ''}`}
                                             value={data.subscription_plan_id}
                                             onChange={e => setData('subscription_plan_id', e.target.value)}
@@ -67,13 +67,13 @@ export default function Edit({ auth, company, subscription, plans }) {
                                             <div className="text-error text-sm mt-1">{errors.subscription_plan_id}</div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Billing Cycle */}
                                     <div className="form-control w-full">
                                         <label className="label">
                                             <span className="label-text">Billing Cycle</span>
                                         </label>
-                                        <select 
+                                        <select
                                             className={`select select-bordered w-full ${errors.billing_cycle ? 'select-error' : ''}`}
                                             value={data.billing_cycle}
                                             onChange={e => setData('billing_cycle', e.target.value)}
@@ -86,13 +86,13 @@ export default function Edit({ auth, company, subscription, plans }) {
                                             <div className="text-error text-sm mt-1">{errors.billing_cycle}</div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Status */}
                                     <div className="form-control w-full">
                                         <label className="label">
                                             <span className="label-text">Status</span>
                                         </label>
-                                        <select 
+                                        <select
                                             className={`select select-bordered w-full ${errors.status ? 'select-error' : ''}`}
                                             value={data.status}
                                             onChange={e => setData('status', e.target.value)}
@@ -107,14 +107,14 @@ export default function Edit({ auth, company, subscription, plans }) {
                                         )}
                                     </div>
                                 </div>
-                                
+
                                 {/* Cancellation Reason - Only show if status is canceled */}
                                 {data.status === 'canceled' && (
                                     <div className="form-control w-full mt-6">
                                         <label className="label">
                                             <span className="label-text">Cancellation Reason</span>
                                         </label>
-                                        <textarea 
+                                        <textarea
                                             className={`textarea textarea-bordered h-24 ${errors.cancellation_reason ? 'textarea-error' : ''}`}
                                             value={data.cancellation_reason}
                                             onChange={e => setData('cancellation_reason', e.target.value)}
@@ -126,17 +126,17 @@ export default function Edit({ auth, company, subscription, plans }) {
                                         )}
                                     </div>
                                 )}
-                                
+
                                 <div className="card-actions justify-end mt-6">
-                                    <Link 
-                                        href={route('admin.companies.subscriptions.show', [company.id, subscription.id])} 
+                                    <Link
+                                        href={route('admin.companies.subscriptions.show', [company.id, subscription.id])}
                                         className="btn btn-ghost"
                                     >
                                         Cancel
                                     </Link>
-                                    <button 
-                                        type="submit" 
-                                        className="btn btn-primary" 
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
                                         disabled={processing}
                                     >
                                         {processing ? 'Saving...' : 'Update Subscription'}

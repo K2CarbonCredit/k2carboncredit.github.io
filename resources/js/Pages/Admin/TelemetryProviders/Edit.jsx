@@ -33,24 +33,23 @@ export default function Edit({ auth, provider }) {
     return (
         <AdminLayout
             user={auth.user}
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-base-content leading-tight">
-                        Edit Telemetry Provider
-                    </h2>
-                    <Link href={route('admin.telemetry-providers.index')}>
-                        <button type="button" className="btn btn-outline btn-sm">
-                            <FiArrowLeft className="mr-1" /> Back to Providers
-                        </button>
-                    </Link>
-                </div>
-            }
         >
             <Head title={`Edit ${provider.name}`} />
 
-            <div className="py-6">
+            <div>
                 <div className="card bg-base-100 shadow-xl">
                     <div className="card-body">
+                        <div className="card-header flex items-center justify-between mb-4">
+                            <h3 className="card-title text-base-content text-xl font-semibold inline-block">Edit Provider: {provider.name}</h3>
+                            <div className="flex gap-2">
+                                <Link href={route('admin.telemetry-providers.index')}>
+                                    <button type="button" className="btn btn-outline btn-sm">
+                                        <FiArrowLeft className="mr-1" /> Back to Providers
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                        
                         <h3 className="card-title text-base-content mb-4">Provider Information</h3>
                         <div className="divider mt-0"></div>
 
@@ -155,19 +154,19 @@ export default function Edit({ auth, provider }) {
                                 <InputError message={errors.integration_details} className="mt-2" />
                             </div>
 
-                            <div className="flex items-center justify-end mt-8 gap-4">
-                                <Link
-                                    href={route('admin.telemetry-providers.index')}
-                                    className="btn btn-outline"
-                                >
-                                    Cancel
+                            <div className="flex flex-col sm:flex-row gap-2 justify-end mt-8 pt-4 border-t">
+                                <Link href={route('admin.telemetry-providers.index')}>
+                                    <button type="button" className="btn btn-outline w-full sm:w-auto">
+                                        Cancel
+                                    </button>
                                 </Link>
 
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-primary w-full sm:w-auto"
                                     disabled={processing}
                                 >
+                                    {processing ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
                                     <FiSave className="mr-1" /> Update Provider
                                 </button>
                             </div>

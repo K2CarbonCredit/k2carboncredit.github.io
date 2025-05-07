@@ -33,9 +33,9 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                             <div className="card-body">
                                 <div className="flex items-center mb-6">
                                     {company.logo ? (
-                                        <img 
-                                            src={`/storage/${company.logo}`} 
-                                            alt={company.name} 
+                                        <img
+                                            src={`/storage/${company.logo}`}
+                                            alt={company.name}
                                             className="w-16 h-16 object-cover rounded-full mr-4"
                                         />
                                     ) : (
@@ -48,17 +48,17 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                     <div>
                                         <h3 className="text-2xl font-bold text-base-content">{company.name}</h3>
                                         <div className={`badge ${
-                                            company.status === 'active' ? 'badge-success' : 
-                                            company.status === 'inactive' ? 'badge-error' : 
+                                            company.status === 'active' ? 'badge-success' :
+                                            company.status === 'inactive' ? 'badge-error' :
                                             'badge-warning'
                                         }`}>
                                             {company.status.charAt(0).toUpperCase() + company.status.slice(1)}
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div className="divider mt-0"></div>
-                                
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <h4 className="card-title text-base-content mb-4 text-base">Contact Information</h4>
@@ -87,7 +87,7 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                             )}
                                         </ul>
                                     </div>
-                                    
+
                                     <div>
                                         <h4 className="card-title text-base-content mb-4 text-base">Address</h4>
                                         {company.address || company.city || company.state || company.country ? (
@@ -109,14 +109,14 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                         )}
                                     </div>
                                 </div>
-                                
+
                                 {company.industry && (
                                     <div className="mt-6">
                                         <h4 className="card-title text-base-content mb-4 text-base">Industry</h4>
                                         <p className="text-base-content">{company.industry}</p>
                                     </div>
                                 )}
-                                
+
                                 {company.description && (
                                     <div className="mt-6">
                                         <h4 className="card-title text-base-content mb-4 text-base">Description</h4>
@@ -126,20 +126,20 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                             </div>
                         </div>
                     </div>
-                    
+
                     {/* Company Stats Card */}
                     <div>
                         <div className="card bg-base-100 shadow-xl">
                             <div className="card-body">
                                 <h4 className="card-title text-base-content mb-4 text-base">Company Stats</h4>
-                                
+
                                 <div className="stats stats-vertical shadow w-full bg-base-200">
                                     <div className="stat">
                                         <div className="stat-title">Total Users</div>
                                         <div className="stat-value text-primary">{userCount}</div>
                                         <div className="stat-desc">Members in this company</div>
                                     </div>
-                                    
+
                                     <div className="stat">
                                         <div className="stat-title">Created</div>
                                         <div className="stat-value text-base text-primary">
@@ -150,9 +150,9 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div className="divider"></div>
-                                
+
                                 <h4 className="card-title text-base-content mb-4 text-base">Company Owners</h4>
                                 {companyOwners.length > 0 ? (
                                     <ul className="space-y-3">
@@ -173,9 +173,9 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                 ) : (
                                     <p className="text-base-content/70">No company owners found</p>
                                 )}
-                                
+
                                 <div className="divider"></div>
-                                
+
                                 {/* Subscription Information */}
                                 <h4 className="card-title text-base-content mb-4 text-base">Subscription</h4>
                                 {activeSubscription ? (
@@ -190,8 +190,8 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                         <div className="flex items-center text-sm text-base-content/70 mb-1">
                                             <FiDollarSign className="mr-1" />
                                             <span>
-                                                {activeSubscription.billing_cycle === 'monthly' ? 
-                                                    `$${activeSubscription.recurring_fee}/month` : 
+                                                {activeSubscription.billing_cycle === 'monthly' ?
+                                                    `$${activeSubscription.recurring_fee}/month` :
                                                     `$${activeSubscription.recurring_fee}/year`}
                                             </span>
                                         </div>
@@ -200,8 +200,8 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                             <span>Renews: {new Date(activeSubscription.next_billing_date).toLocaleDateString()}</span>
                                         </div>
                                         <div className="mt-2">
-                                            <Link 
-                                                href={route('admin.companies.subscriptions.show', [company.id, activeSubscription.id])} 
+                                            <Link
+                                                href={route('admin.companies.subscriptions.show', [company.id, activeSubscription.id])}
                                                 className="btn btn-outline btn-sm btn-info w-full"
                                             >
                                                 <FiInfo className="mr-1" /> View Details
@@ -215,9 +215,9 @@ export default function Show({ auth, company, userCount, companyOwners, activeSu
                                         </div>
                                     </div>
                                 )}
-                                
+
                                 <div className="divider"></div>
-                                
+
                                 <div className="space-y-2">
                                     <Link href={route('admin.companies.users.index', company.id)} className="btn btn-outline btn-primary w-full">
                                         <FiUsers className="mr-2" /> Manage Users

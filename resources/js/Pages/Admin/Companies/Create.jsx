@@ -8,7 +8,7 @@ import SelectInput from '@/Components/SelectInput';
 import TextareaInput from '@/Components/TextareaInput';
 import { FiArrowLeft, FiHome, FiMail, FiPhone, FiGlobe, FiBriefcase, FiMapPin, FiFileText, FiUser, FiLock } from 'react-icons/fi';
 
-export default function Create() {
+export default function Create({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -38,24 +38,25 @@ export default function Create() {
     
     return (
         <AdminLayout
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-base-content leading-tight">Create New Company</h2>
-                    <Link href={route('admin.companies.index')}>
-                        <button type="button" className="btn btn-outline btn-sm">
-                            <FiArrowLeft className="mr-1" /> Back to Companies
-                        </button>
-                    </Link>
-                </div>
-            }
+            user={auth?.user}
         >
             <Head title="Create Company" />
 
-            <div className="card bg-base-100 shadow-xl">
-                <div className="card-body">
-                    <form onSubmit={handleSubmit}>
+            <div>
+                <div className="card bg-base-100 shadow-xl">
+                    <div className="card-body">
+                        <div className="card-header flex items-center justify-between mb-4">
+                            <h3 className="card-title text-base-content text-xl font-semibold inline-block">Create New Company</h3>
+                            <Link href={route('admin.companies.index')}>
+                                <button type="button" className="btn btn-outline btn-sm">
+                                    <FiArrowLeft className="mr-1" /> Back to Companies
+                                </button>
+                            </Link>
+                        </div>
+                        
+                        <form onSubmit={handleSubmit}>
                                 <div className="mb-8">
-                                    <h3 className="card-title text-base-content mb-4">Company Information</h3>
+                                    <h3 className="text-lg font-medium text-base-content mb-4">Company Information</h3>
                                     <div className="divider mt-0"></div>
                                     
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -267,7 +268,7 @@ export default function Create() {
                                 </div>
                                 
                                 <div className="mb-8">
-                                    <h3 className="card-title text-base-content mb-4">Company Owner Information</h3>
+                                    <h3 className="text-lg font-medium text-base-content mb-4">Company Owner</h3>
                                     <div className="divider mt-0"></div>
                                     
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -339,11 +340,14 @@ export default function Create() {
                                         </button>
                                     </Link>
                                     <button type="submit" className="btn btn-primary w-full sm:w-auto" disabled={processing}>
+                                        {processing ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
                                         Create Company
                                     </button>
                                 </div>
                             </form>
+                    </div>
                 </div>
+                <div className="h-16"></div>
             </div>
         </AdminLayout>
     );

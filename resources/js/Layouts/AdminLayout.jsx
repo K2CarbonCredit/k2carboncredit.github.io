@@ -11,9 +11,9 @@ export default function AdminLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showCompanySubmenu, setShowCompanySubmenu] = useState(false);
-    
+
     const isImpersonating = user && user.impersonating;
-    
+
     return (
         <div className="flex min-h-screen bg-base-100">
             {/* Sidebar - hidden on mobile, visible on desktop */}
@@ -30,7 +30,7 @@ export default function AdminLayout({ header, children }) {
                     </div>
                 </div>
             )}
-            
+
             <div className="flex flex-1 flex-col">
             <nav className="border-b border-base-300 bg-base-100 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,7 +44,7 @@ export default function AdminLayout({ header, children }) {
                             >
                                 <FiMenu className="h-6 w-6" />
                             </button>
-                            
+
                             {/* Page title - shown on mobile only */}
                             <div className="md:hidden ml-2 font-semibold">
                                 {route().current('admin.dashboard') && 'Dashboard'}
@@ -62,12 +62,12 @@ export default function AdminLayout({ header, children }) {
                                     {route().current('admin.companies.create') && 'Create Company'}
                                 </div>
                             )}
-                            
+
                             {isImpersonating && (
                                 <div className="mr-3">
-                                    <Link 
-                                        href={route('admin.stop-impersonating')} 
-                                        method="post" 
+                                    <Link
+                                        href={route('admin.stop-impersonating')}
+                                        method="post"
                                         as="button"
                                         className="btn btn-sm btn-error"
                                     >
@@ -75,7 +75,7 @@ export default function AdminLayout({ header, children }) {
                                     </Link>
                                 </div>
                             )}
-                            
+
                             <div className="ml-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -156,8 +156,8 @@ export default function AdminLayout({ header, children }) {
                 </header>
             )}
 
-            <main className="flex-1">
-                <div className="px-4 py-4 md:px-6">
+            <main className="flex-1 overflow-y-auto md:pt-4 pt-4 px-6  bg-base-200">
+                <div>
                     {children}
                 </div>
             </main>

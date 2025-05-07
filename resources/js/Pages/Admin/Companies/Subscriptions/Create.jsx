@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function Create({ auth, company, plans }) {
     const [startDate, setStartDate] = useState(new Date());
-    
+
     const { data, setData, post, processing, errors } = useForm({
         subscription_plan_id: '',
         billing_cycle: 'monthly',
@@ -49,7 +49,7 @@ export default function Create({ auth, company, plans }) {
                     <div className="card bg-base-100 shadow-xl">
                         <div className="card-body">
                             <h3 className="card-title text-lg mb-4">New Subscription Details</h3>
-                            
+
                             <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Subscription Plan */}
@@ -57,7 +57,7 @@ export default function Create({ auth, company, plans }) {
                                         <label className="label">
                                             <span className="label-text">Subscription Plan</span>
                                         </label>
-                                        <select 
+                                        <select
                                             className={`select select-bordered w-full ${errors.subscription_plan_id ? 'select-error' : ''}`}
                                             value={data.subscription_plan_id}
                                             onChange={e => setData('subscription_plan_id', e.target.value)}
@@ -74,13 +74,13 @@ export default function Create({ auth, company, plans }) {
                                             <div className="text-error text-sm mt-1">{errors.subscription_plan_id}</div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Billing Cycle */}
                                     <div className="form-control w-full">
                                         <label className="label">
                                             <span className="label-text">Billing Cycle</span>
                                         </label>
-                                        <select 
+                                        <select
                                             className={`select select-bordered w-full ${errors.billing_cycle ? 'select-error' : ''}`}
                                             value={data.billing_cycle}
                                             onChange={e => setData('billing_cycle', e.target.value)}
@@ -93,7 +93,7 @@ export default function Create({ auth, company, plans }) {
                                             <div className="text-error text-sm mt-1">{errors.billing_cycle}</div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Start Date */}
                                     <div className="form-control w-full">
                                         <label className="label">
@@ -112,13 +112,13 @@ export default function Create({ auth, company, plans }) {
                                             <div className="text-error text-sm mt-1">{errors.start_date}</div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Payment Method */}
                                     <div className="form-control w-full">
                                         <label className="label">
                                             <span className="label-text">Payment Method</span>
                                         </label>
-                                        <select 
+                                        <select
                                             className={`select select-bordered w-full ${errors.payment_method ? 'select-error' : ''}`}
                                             value={data.payment_method}
                                             onChange={e => setData('payment_method', e.target.value)}
@@ -136,13 +136,13 @@ export default function Create({ auth, company, plans }) {
                                         )}
                                     </div>
                                 </div>
-                                
+
                                 {/* Notes */}
                                 <div className="form-control w-full mt-6">
                                     <label className="label">
                                         <span className="label-text">Notes</span>
                                     </label>
-                                    <textarea 
+                                    <textarea
                                         className={`textarea textarea-bordered h-24 ${errors.notes ? 'textarea-error' : ''}`}
                                         value={data.notes}
                                         onChange={e => setData('notes', e.target.value)}
@@ -152,17 +152,17 @@ export default function Create({ auth, company, plans }) {
                                         <div className="text-error text-sm mt-1">{errors.notes}</div>
                                     )}
                                 </div>
-                                
+
                                 <div className="card-actions justify-end mt-6">
-                                    <Link 
-                                        href={route('admin.companies.subscriptions.index', company.id)} 
+                                    <Link
+                                        href={route('admin.companies.subscriptions.index', company.id)}
                                         className="btn btn-ghost"
                                     >
                                         Cancel
                                     </Link>
-                                    <button 
-                                        type="submit" 
-                                        className="btn btn-primary" 
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
                                         disabled={processing}
                                     >
                                         {processing ? 'Creating...' : 'Create Subscription'}

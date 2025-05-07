@@ -54,22 +54,23 @@ export default function Edit({ auth, plan }) {
   return (
     <AdminLayout
       user={auth.user}
-      header={
-        <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-xl text-base-content leading-tight">Edit Subscription Plan</h2>
-          <Link href="/admin/subscriptions/plans">
-            <button type="button" className="btn btn-outline btn-sm">
-              <FiArrowLeft className="mr-1" /> Back to Plans
-            </button>
-          </Link>
-        </div>
-      }
     >
       <Head title="Edit Subscription Plan" />
 
-      <div className="py-6">
+      <div>
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
+            <div className="card-header flex items-center justify-between mb-4">
+              <h3 className="card-title text-base-content text-xl font-semibold inline-block">Edit Subscription Plan: {plan.name}</h3>
+              <div className="flex gap-2">
+                <Link href="/admin/subscriptions/plans">
+                  <button type="button" className="btn btn-outline btn-sm">
+                    <FiArrowLeft className="mr-1" /> Back to Plans
+                  </button>
+                </Link>
+              </div>
+            </div>
+            
             <form onSubmit={handleSubmit}>
               {/* Plan Information */}
               <div className="mb-8">
@@ -260,10 +261,10 @@ export default function Edit({ auth, plan }) {
                       {index > 0 && index !== features.length - 1 && (
                         <button 
                           type="button" 
-                          className="btn btn-sm btn-outline btn-error"
+                          className="btn btn-sm btn-ghost text-error"
                           onClick={() => removeFeature(index)}
                         >
-                          Remove
+                          <span className="text-sm">Remove</span>
                         </button>
                       )}
                     </div>
@@ -272,13 +273,14 @@ export default function Edit({ auth, plan }) {
                 <InputError message={errors.features} className="mt-2" />
               </div>
               
-              <div className="flex justify-end space-x-3 mt-8 pt-4 border-t">
+              <div className="flex flex-col sm:flex-row gap-2 justify-end mt-8 pt-4 border-t">
                 <Link href="/admin/subscriptions/plans">
-                  <button type="button" className="btn btn-outline">
+                  <button type="button" className="btn btn-outline w-full sm:w-auto">
                     Cancel
                   </button>
                 </Link>
-                <button type="submit" className="btn btn-primary" disabled={processing}>
+                <button type="submit" className="btn btn-primary w-full sm:w-auto" disabled={processing}>
+                  {processing ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
                   Update Plan
                 </button>
               </div>

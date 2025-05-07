@@ -10,14 +10,14 @@ import Modal from '@/Components/Modal';
 export default function Index({ auth, providers, filters, statuses }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [providerToDelete, setProviderToDelete] = useState(null);
-    
+
     const { data, setData, get, processing } = useForm({
         search: filters.search || '',
         status: filters.status || 'all',
         sort_field: filters.sort_field || 'created_at',
         sort_direction: filters.sort_direction || 'desc',
     });
-    
+
     const handleSearch = (e) => {
         e.preventDefault();
         get(route('admin.telemetry-providers.index'), {
@@ -26,87 +26,82 @@ export default function Index({ auth, providers, filters, statuses }) {
             only: ['providers', 'filters']
         });
     };
-    
+
     const handleSort = (field) => {
-        const direction = 
-            data.sort_field === field && data.sort_direction === 'asc' 
-                ? 'desc' 
+        const direction =
+            data.sort_field === field && data.sort_direction === 'asc'
+                ? 'desc'
                 : 'asc';
-        
+
         setData({
             ...data,
             sort_field: field,
             sort_direction: direction,
         });
-        
+
         get(route('admin.telemetry-providers.index'), {
             preserveState: true,
             preserveScroll: true,
         });
     };
-    
+
     const confirmDelete = (provider) => {
         setProviderToDelete(provider);
         setShowDeleteModal(true);
     };
-    
+
     const deleteProvider = () => {
         if (providerToDelete) {
             window.location.href = route('admin.telemetry-providers.destroy', providerToDelete.id);
         }
     };
-    
+
     const getSortIcon = (field) => {
         if (data.sort_field !== field) {
             return null;
         }
-        
-        return data.sort_direction === 'asc' 
-            ? <span className="ml-1">↑</span> 
+
+        return data.sort_direction === 'asc'
+            ? <span className="ml-1">↑</span>
             : <span className="ml-1">↓</span>;
     };
-    
+
     const statusBadge = (status) => {
         const colors = {
             active: 'badge-success',
             inactive: 'badge-error',
         };
-        
+
         return (
             <div className={`badge ${colors[status] || 'badge-ghost'}`}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
         );
     };
-    
+
     return (
         <AdminLayout
             user={auth.user}
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-base-content leading-tight">
-                        Telemetry Providers
-                    </h2>
-                    <div className="flex gap-2">
-                        <Link href={route('admin.telemetry-providers.create')}>
-                            <button type="button" className="btn btn-primary btn-sm">
-                                <FiPlus className="mr-1" /> Add Provider
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            }
         >
             <Head title="Telemetry Providers" />
 
-            <div className="py-6">
+            <div>
                 <div className="card bg-base-100 shadow-xl">
                     <div className="card-body">
-                        <h3 className="card-title text-base-content mb-4">Telemetry Providers List</h3>
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                            <h3 className="card-title text-base-content">Telemetry Providers List</h3>
+                            <div className="flex gap-2">
+                                <Link href={route('admin.telemetry-providers.create')}>
+                                    <button type="button" className="btn btn-primary btn-sm">
+                                        <FiPlus className="mr-1" /> Add Provider
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
                         <div className="divider mt-0"></div>
-                        
+
                         {/* Filters */}
-                        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-6">
+                        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 my-6">
                             <div className="form-control flex-grow">
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -146,31 +141,31 @@ export default function Index({ auth, providers, filters, statuses }) {
                                 </button>
                             </div>
                         </form>
-                            
+
                         {/* Providers Table */}
                         <div className="overflow-x-auto w-full">
                             <table className="table table-zebra w-full">
                                 <thead>
                                     <tr>
-                                        <th 
+                                        <th
                                             className="cursor-pointer"
                                             onClick={() => handleSort('name')}
                                         >
                                             Name {getSortIcon('name')}
                                         </th>
-                                        <th 
+                                        <th
                                             className="cursor-pointer"
                                             onClick={() => handleSort('api_endpoint')}
                                         >
                                             API Endpoint {getSortIcon('api_endpoint')}
                                         </th>
-                                        <th 
+                                        <th
                                             className="cursor-pointer"
                                             onClick={() => handleSort('status')}
                                         >
                                             Status {getSortIcon('status')}
                                         </th>
-                                        <th 
+                                        <th
                                             className="cursor-pointer"
                                             onClick={() => handleSort('created_at')}
                                         >
@@ -224,16 +219,19 @@ export default function Index({ auth, providers, filters, statuses }) {
                                                     <div className="flex flex-wrap gap-2">
                                                         <Link href={route('admin.telemetry-providers.show', provider.id)} className="btn btn-ghost btn-xs">
                                                             <FiEye className="text-primary" />
+                                                            <span className="sr-only">View</span>
                                                         </Link>
                                                         <Link href={route('admin.telemetry-providers.edit', provider.id)} className="btn btn-ghost btn-xs">
                                                             <FiEdit className="text-warning" />
+                                                            <span className="sr-only">Edit</span>
                                                         </Link>
-                                                        <button 
+                                                        <button
                                                             type="button"
-                                                            className="btn btn-ghost btn-xs" 
+                                                            className="btn btn-ghost btn-xs"
                                                             onClick={() => confirmDelete(provider)}
                                                         >
                                                             <FiTrash2 className="text-error" />
+                                                            <span className="sr-only">Delete</span>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -242,8 +240,13 @@ export default function Index({ auth, providers, filters, statuses }) {
                                     ) : (
                                         <tr>
                                             <td colSpan="5" className="text-center py-4">
-                                                <div className="alert alert-info">
-                                                    No telemetry providers found.
+                                                <div className="alert alert-info shadow-lg">
+                                                    <div>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        <span>No telemetry providers found.</span>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -251,30 +254,30 @@ export default function Index({ auth, providers, filters, statuses }) {
                                 </tbody>
                             </table>
                         </div>
-                            
+
                         {/* Pagination */}
-                        {providers.links && <Pagination class="mt-6" links={providers.links} />}
+                        <Pagination class="mt-6" links={providers.links} />
                     </div>
                 </div>
                 <div className="h-16"></div>
             </div>
-            
+
             {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <div className="p-6">
                     <h2 className="text-lg font-medium text-base-content">
                         Are you sure you want to delete this telemetry provider?
                     </h2>
-                    
+
                     <p className="mt-1 text-sm text-base-content">
                         This action cannot be undone. All integrations associated with this provider will also be deleted.
                     </p>
-                    
+
                     <div className="mt-6 flex justify-end space-x-3">
                         <button className="btn btn-outline" onClick={() => setShowDeleteModal(false)}>
                             Cancel
                         </button>
-                        
+
                         <button className="btn btn-error" onClick={deleteProvider}>
                             Delete Provider
                         </button>

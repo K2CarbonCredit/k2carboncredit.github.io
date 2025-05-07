@@ -17,31 +17,27 @@ export default function Show({ auth, provider }) {
     return (
         <AdminLayout
             user={auth.user}
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-base-content leading-tight">
-                        Telemetry Provider Details
-                    </h2>
-                    <div className="flex gap-2">
-                        <Link href={route('admin.telemetry-providers.index')}>
-                            <button type="button" className="btn btn-outline btn-sm">
-                                <FiArrowLeft className="mr-1" /> Back to Providers
-                            </button>
-                        </Link>
-                        <Link href={route('admin.telemetry-providers.edit', provider.id)}>
-                            <button type="button" className="btn btn-primary btn-sm">
-                                <FiEdit className="mr-1" /> Edit Provider
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            }
         >
             <Head title={provider.name} />
 
-            <div className="py-6">
+            <div>
                 <div className="card bg-base-100 shadow-xl">
                     <div className="card-body">
+                        <div className="card-header flex items-center justify-between mb-4">
+                            <h3 className="card-title text-base-content text-xl font-semibold inline-block">Telemetry Provider Details</h3>
+                            <div className="flex gap-2">
+                                <Link href={route('admin.telemetry-providers.index')}>
+                                    <button type="button" className="btn btn-outline btn-sm">
+                                        <FiArrowLeft className="mr-1" /> Back to Providers
+                                    </button>
+                                </Link>
+                                <Link href={route('admin.telemetry-providers.edit', provider.id)}>
+                                    <button type="button" className="btn btn-primary btn-sm">
+                                        <FiEdit className="mr-1" /> Edit Provider
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
                         <div className="flex items-center gap-4 mb-6">
                             <div className="avatar">
                                 <div className="w-16 h-16 rounded-lg bg-base-300 flex items-center justify-center">
@@ -125,8 +121,13 @@ export default function Show({ auth, provider }) {
                                         </pre>
                                     </div>
                                 ) : (
-                                    <div className="alert alert-info">
-                                        No integration details available.
+                                    <div className="alert alert-info shadow-lg">
+                                        <div className="flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="w-6 h-6 text-info stroke-current">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span>No integration details available.</span>
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -168,25 +169,25 @@ export default function Show({ auth, provider }) {
                                     </table>
                                 </div>
                             ) : (
-                                <div className="alert alert-info">
-                                    No companies are currently using this telemetry provider.
+                                <div className="alert alert-info shadow-lg">
+                                    <div>
+                                        <span>No companies are currently using this telemetry provider.</span>
+                                    </div>
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex items-center justify-end mt-8 gap-4">
-                            <Link
-                                href={route('admin.telemetry-providers.index')}
-                                className="btn btn-outline"
-                            >
-                                Back to List
+                        <div className="flex flex-col sm:flex-row gap-2 justify-end mt-8 pt-4 border-t">
+                            <Link href={route('admin.telemetry-providers.index')}>
+                                <button type="button" className="btn btn-outline w-full sm:w-auto">
+                                    Back to List
+                                </button>
                             </Link>
 
-                            <Link
-                                href={route('admin.telemetry-providers.edit', provider.id)}
-                                className="btn btn-primary"
-                            >
-                                <FiEdit className="mr-1" /> Edit Provider
+                            <Link href={route('admin.telemetry-providers.edit', provider.id)}>
+                                <button type="button" className="btn btn-primary w-full sm:w-auto">
+                                    <FiEdit className="mr-1" /> Edit Provider
+                                </button>
                             </Link>
                         </div>
                     </div>

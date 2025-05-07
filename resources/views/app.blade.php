@@ -7,8 +7,9 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @routes
@@ -17,6 +18,10 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <!-- K2 Logo positioned in the top left as per dashboard design -->
+        <div id="app-logo" style="position: fixed; top: 20px; left: 20px; z-index: 50;">
+            <img src="{{ asset('images/k2-logo.svg') }}" alt="K2 Carbon Credit" width="32" height="32" style="border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        </div>
         @inertia
     </body>
 </html>

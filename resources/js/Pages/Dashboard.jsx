@@ -6,7 +6,7 @@ export default function Dashboard() {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight">
+                    <h2 className="text-heading font-semibold leading-tight">
                         Company Dashboard
                     </h2>
                     <div className="flex space-x-2">
@@ -45,9 +45,9 @@ export default function Dashboard() {
                         <div className="card-body p-4">
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <h3 className="card-title text-lg">Total Emissions</h3>
-                                    <p className="text-3xl font-bold mt-2">1,245 <span className="text-sm font-normal">tCO₂e</span></p>
-                                    <p className="text-sm text-success mt-1">↓ 12% from last month</p>
+                                    <h3 className="card-title text-section">Total Emissions</h3>
+                                    <p className="text-metric font-bold mt-2">1,245 <span className="text-indicator font-normal">tCO₂e</span></p>
+                                    <p className="text-indicator text-success mt-1">↓ 12% from last month</p>
                                 </div>
                                 <div className="bg-primary/10 p-3 rounded-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

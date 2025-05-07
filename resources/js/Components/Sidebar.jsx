@@ -195,7 +195,7 @@ export default function Sidebar() {
     return (
         <div className="h-screen w-64 bg-base-100 text-base-content border-r border-base-300 flex flex-col">
             {/* Logo and Company Name */}
-            <div className="flex h-16 items-center px-4 border-b border-base-300">
+            {/* <div className="flex h-16 items-center px-4 border-b border-base-300">
                 <div className="flex items-center space-x-2">
                     <div className="avatar">
                         <div className="w-8 rounded-full bg-primary text-primary-content flex items-center justify-center">
@@ -204,7 +204,7 @@ export default function Sidebar() {
                     </div>
                     <div className="text-lg font-semibold">Carbon Credit</div>
                 </div>
-            </div>
+            </div> */}
 
             {/* User Info */}
             <div className="px-4 py-3 border-b border-base-300">
@@ -238,7 +238,7 @@ export default function Sidebar() {
 
             {/* Navigation */}
             <div className="flex-1 overflow-y-auto px-2 py-2">
-                <ul className="menu menu-sm gap-1">
+                <ul className="menu gap-1">
                     {sections.map((section) => (
                         <li key={section.id} className="mb-2">
                             <div
@@ -277,7 +277,7 @@ export default function Sidebar() {
                                 </svg>
                             </div>
                             {openSection === section.id && (
-                                <ul className="menu menu-sm pl-4 mt-1">
+                                <ul className="menu pl-4 mt-1">
                                     {section.items.map((item) => (
                                         <li key={item.id}>
                                             <Link
@@ -288,7 +288,7 @@ export default function Sidebar() {
                                                 {item.label}
                                             </Link>
                                             {item.subItems && activeItem === item.id && (
-                                                <ul className="menu menu-sm pl-2 mt-1">
+                                                <ul className="menu pl-2 mt-1">
                                                     {item.subItems.map((subItem) => (
                                                         <li key={subItem.id}>
                                                             <Link

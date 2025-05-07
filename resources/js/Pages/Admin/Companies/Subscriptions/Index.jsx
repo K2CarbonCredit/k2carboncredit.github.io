@@ -10,23 +10,23 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
     const [subscriptionToDelete, setSubscriptionToDelete] = useState(null);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [subscriptionForPayment, setSubscriptionForPayment] = useState(null);
-    
+
     const confirmDelete = (subscription) => {
         setSubscriptionToDelete(subscription);
         setShowDeleteModal(true);
     };
-    
+
     const deleteSubscription = () => {
         if (subscriptionToDelete) {
             window.location.href = route('admin.companies.subscriptions.destroy', [company.id, subscriptionToDelete.id]);
         }
     };
-    
+
     const openPaymentModal = (subscription) => {
         setSubscriptionForPayment(subscription);
         setShowPaymentModal(true);
     };
-    
+
     const statusBadge = (status) => {
         const colors = {
             active: 'badge-success',
@@ -34,14 +34,14 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
             expired: 'badge-warning',
             pending: 'badge-info',
         };
-        
+
         const icons = {
             active: <FiCheck size={14} />,
             cancelled: <FiX size={14} />,
             expired: <FiX size={14} />,
             pending: <FiRefreshCw size={14} />,
         };
-        
+
         return (
             <div className={`badge ${colors[status] || 'badge-ghost'} flex items-center gap-1`}>
                 {icons[status]}
@@ -49,14 +49,14 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
             </div>
         );
     };
-    
+
     const { data, setData, post, processing, errors, reset } = useForm({
         amount: '',
         payment_date: new Date().toISOString().substr(0, 10),
         payment_method: 'bank_transfer',
         notes: '',
     });
-    
+
     const recordPayment = (e) => {
         e.preventDefault();
         post(route('admin.companies.subscriptions.record-payment', [company.id, subscriptionForPayment.id]), {
@@ -66,7 +66,7 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
             },
         });
     };
-    
+
     return (
         <AdminLayout
             user={auth.user}
@@ -97,18 +97,18 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                     <div className="card-body">
                         <h3 className="card-title text-base-content mb-4">Subscription History</h3>
                         <div className="divider mt-0"></div>
-                        
+
                         {/* Active Subscription Card */}
-                        {subscriptions && subscriptions.data && subscriptions.data.some(sub => 
-                            sub.status === 'active' && 
+                        {subscriptions && subscriptions.data && subscriptions.data.some(sub =>
+                            sub.status === 'active' &&
                             (statusFilter === 'all' || sub.status === statusFilter) &&
                             (searchTerm === '' || sub.plan.name.toLowerCase().includes(searchTerm.toLowerCase()))
                         ) && (
                             <div className="mb-8">
                                 <h4 className="font-semibold text-lg mb-3">Active Subscription</h4>
                                 {subscriptions.data
-                                    .filter(sub => 
-                                        sub.status === 'active' && 
+                                    .filter(sub =>
+                                        sub.status === 'active' &&
                                         (statusFilter === 'all' || sub.status === statusFilter) &&
                                         (searchTerm === '' || sub.plan.name.toLowerCase().includes(searchTerm.toLowerCase()))
                                     )
@@ -142,16 +142,16 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                                                         <Link href={route('admin.companies.subscriptions.edit', [company.id, subscription.id])} className="btn btn-sm btn-outline">
                                                             <FiEdit className="mr-1" /> Edit
                                                         </Link>
-                                                        <button 
+                                                        <button
                                                             type="button"
-                                                            className="btn btn-sm btn-outline" 
+                                                            className="btn btn-sm btn-outline"
                                                             onClick={() => openPaymentModal(subscription)}
                                                         >
                                                             <FiDollarSign className="mr-1" /> Record Payment
                                                         </button>
-                                                        <Link 
-                                                            href={route('admin.companies.subscriptions.cancel', [company.id, subscription.id])} 
-                                                            method="post" 
+                                                        <Link
+                                                            href={route('admin.companies.subscriptions.cancel', [company.id, subscription.id])}
+                                                            method="post"
                                                             className="btn btn-sm btn-error"
                                                         >
                                                             <FiX className="mr-1" /> Cancel
@@ -164,7 +164,7 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                                 ))}
                             </div>
                         )}
-                            
+
                         {/* Subscriptions Table */}
                         <div className="overflow-x-auto w-full">
                             <table className="table table-zebra w-full">
@@ -198,17 +198,17 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                                                             <FiEdit className="text-warning" />
                                                         </Link>
                                                         {subscription.status === 'expired' && (
-                                                            <Link 
-                                                                href={route('admin.companies.subscriptions.renew', [company.id, subscription.id])} 
-                                                                method="post" 
+                                                            <Link
+                                                                href={route('admin.companies.subscriptions.renew', [company.id, subscription.id])}
+                                                                method="post"
                                                                 className="btn btn-ghost btn-xs"
                                                             >
                                                                 <FiRefreshCw className="text-success" />
                                                             </Link>
                                                         )}
-                                                        <button 
+                                                        <button
                                                             type="button"
-                                                            className="btn btn-ghost btn-xs" 
+                                                            className="btn btn-ghost btn-xs"
                                                             onClick={() => confirmDelete(subscription)}
                                                         >
                                                             <FiTrash2 className="text-error" />
@@ -229,43 +229,43 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                                 </tbody>
                             </table>
                         </div>
-                            
+
                         {/* Pagination */}
                         <Pagination class="mt-6" links={subscriptions.links} />
                     </div>
                 </div>
             </div>
-            
+
             {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <div className="p-6">
                     <h2 className="text-lg font-medium text-base-content">
                         Are you sure you want to delete this subscription?
                     </h2>
-                    
+
                     <p className="mt-1 text-sm text-base-content">
                         This action cannot be undone. All payment records associated with this subscription will also be deleted.
                     </p>
-                    
+
                     <div className="mt-6 flex justify-end space-x-3">
                         <button className="btn btn-outline" onClick={() => setShowDeleteModal(false)}>
                             Cancel
                         </button>
-                        
+
                         <button className="btn btn-error" onClick={deleteSubscription}>
                             Delete Subscription
                         </button>
                     </div>
                 </div>
             </Modal>
-            
+
             {/* Payment Modal */}
             <Modal show={showPaymentModal} onClose={() => setShowPaymentModal(false)}>
                 <div className="p-6">
                     <h2 className="text-lg font-medium text-base-content mb-4">
                         Record Payment
                     </h2>
-                    
+
                     {subscriptionForPayment && (
                         <div className="mb-4 p-3 bg-base-200 rounded-lg">
                             <div className="font-medium">Plan: {subscriptionForPayment.plan.name}</div>
@@ -273,49 +273,49 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                             <div>Billing Cycle: {subscriptionForPayment.billing_cycle}</div>
                         </div>
                     )}
-                    
+
                     <form onSubmit={recordPayment}>
                         <div className="mb-4">
                             <label className="form-control w-full">
                                 <div className="label">
                                     <span className="label-text">Amount</span>
                                 </div>
-                                <input 
-                                    type="number" 
+                                <input
+                                    type="number"
                                     step="0.01"
-                                    className="input input-bordered w-full" 
-                                    value={data.amount} 
+                                    className="input input-bordered w-full"
+                                    value={data.amount}
                                     onChange={e => setData('amount', e.target.value)}
                                     required
                                 />
                                 {errors.amount && <div className="text-error text-sm mt-1">{errors.amount}</div>}
                             </label>
                         </div>
-                        
+
                         <div className="mb-4">
                             <label className="form-control w-full">
                                 <div className="label">
                                     <span className="label-text">Payment Date</span>
                                 </div>
-                                <input 
-                                    type="date" 
-                                    className="input input-bordered w-full" 
-                                    value={data.payment_date} 
+                                <input
+                                    type="date"
+                                    className="input input-bordered w-full"
+                                    value={data.payment_date}
                                     onChange={e => setData('payment_date', e.target.value)}
                                     required
                                 />
                                 {errors.payment_date && <div className="text-error text-sm mt-1">{errors.payment_date}</div>}
                             </label>
                         </div>
-                        
+
                         <div className="mb-4">
                             <label className="form-control w-full">
                                 <div className="label">
                                     <span className="label-text">Payment Method</span>
                                 </div>
-                                <select 
-                                    className="select select-bordered w-full" 
-                                    value={data.payment_method} 
+                                <select
+                                    className="select select-bordered w-full"
+                                    value={data.payment_method}
                                     onChange={e => setData('payment_method', e.target.value)}
                                     required
                                 >
@@ -329,27 +329,27 @@ export default function SubscriptionIndex({ auth, company, subscriptions, plans 
                                 {errors.payment_method && <div className="text-error text-sm mt-1">{errors.payment_method}</div>}
                             </label>
                         </div>
-                        
+
                         <div className="mb-4">
                             <label className="form-control w-full">
                                 <div className="label">
                                     <span className="label-text">Notes</span>
                                 </div>
-                                <textarea 
-                                    className="textarea textarea-bordered w-full" 
-                                    value={data.notes} 
+                                <textarea
+                                    className="textarea textarea-bordered w-full"
+                                    value={data.notes}
                                     onChange={e => setData('notes', e.target.value)}
                                     rows="3"
                                 ></textarea>
                                 {errors.notes && <div className="text-error text-sm mt-1">{errors.notes}</div>}
                             </label>
                         </div>
-                        
+
                         <div className="mt-6 flex justify-end space-x-3">
                             <button type="button" className="btn btn-outline" onClick={() => setShowPaymentModal(false)}>
                                 Cancel
                             </button>
-                            
+
                             <button type="submit" className="btn btn-primary" disabled={processing}>
                                 Record Payment
                             </button>
